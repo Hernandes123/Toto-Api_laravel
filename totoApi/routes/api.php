@@ -12,37 +12,17 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('dogs', 'api\DogController');
 
-Route::apiResource('login', 'api\Logincontroller');
-
-
-
-Route::group([
-    'prefix' => 'auth',
-    'namespace' => 'api',
-], function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@register');
-    Route::post('password/reset', 'AuthController@reset');
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function() {
-          Route::get('logout', 'AuthController@logout');
-          Route::get('user', 'AuthController@user');
-          Route::post('user', 'AuthController@profile');
-    });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
 
+Route::group(array('prefix' => 'api'), function(){
+    Route::get('/' , function(){
+        return response()->json(['message' => 'Connected API']);
+    });
 
-
-    
-Route::group(array('prefix' => 'api',   'middleware' => 'cors'), function()
-{
-
-  Route::get('/', function () {
-      return response()->json(['message' => 'Hernandes Api', 'status' => 'Connected']);;
-  });
-
-  Route::resource('/login', 'api\LoginController');
+    Route::post('/login', 'api\LoginController@login');
+    Route::get('/logout', 'api\LoginController@logout');
+    Route::get('/teste', 'api\LoginController@teste');
 });
