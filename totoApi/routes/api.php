@@ -25,4 +25,10 @@ Route::group(array('prefix' => 'api'), function(){
     Route::post('/login', 'api\LoginController@login');
     Route::get('/logout', 'api\LoginController@logout');
     Route::get('/teste', 'api\LoginController@teste');
+
+});
+
+Route::group(array('prefix' => 'local'), function(){
+    Route::post('/localizacao', 'api\LocalizationController@store');
+    Route::get('/localizacao/visualizacao', 'api\LocalizationController@index');
 });
